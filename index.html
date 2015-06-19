@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<script type="text/javascript" src="jquery-1.11.1.js"></script>
+	<script type="text/javascript" src="angular.min.js"></script>
+	<script type="text/javascript">
+		var m1 = angular.module('myApp',[]);
+
+		m1.controller('Aaa', ['$scope', function($scope){
+			$scope.name = [
+				{color:'red',age:'20'},
+				{color:'blank',age:'30'},
+				{color:'yellow',age:'10'},
+				{color:'green',age:'40'}
+			];
+		}]);
+
+		/*document.onclick = function(){
+			var aDiv = document.getElementsByTagName('div');
+
+			angular.bootstrap(aDiv[0], ['myApp1']);
+			angular.bootstrap(aDiv[1], ['myApp2']);
+		};*/
+	</script>
+</head>
+<body>
+	<div ng-app="myApp" ng-controller="Aaa">{{name | orderBy : 'age' : true}}</div>
+</body>
+</html>

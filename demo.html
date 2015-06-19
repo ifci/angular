@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		*{margin:0;padding: 0;}
+		body{padding: 20px;}
+		.code_box{width:500px;}
+		h3{color: #0051FF;}
+		p,article{font-size: 16px;font-family: 'microsoft yahei';text-indent: 2em;}
+		article:first-letter{font-weight: bold;color: #E46A05;font-style: italic;padding:0 .3em 0 0;margin-left: -.8em;}
+	</style>
+
+
+	<script type="text/javascript">
+		function Aaa($scope){
+			$scope.name = 'hello';
+			$scope.ang = 'angularJs';
+		}
+	</script>
+</head>
+<body>
+	<h3>AngularJs教程</h3>
+	<p>一、什么是angularJs</p>
+	<article>1.基于javascript开发的客户端应用框架，使我们可以更加快捷、简单的开发应用</article>
+	<article>2.诞生于2009年，后被Google所收购</article>
+	<article>3.重点在于前后端数据分离的模式，适用于CRUD应用或SPA单页面网站的开发</article>
+	<p>二、简单的例子</p>
+	<article>1.变量的定义</article>
+	<pre class="codes">
+function Aaa($scope){
+	$scope.name = 'hello';
+$scope.ang = 'angularJs';
+}
+
+&lt;div ng-controller="Aaa"&gt;
+	&lt;p&gt;{{name}}，{{ang}}&lt;/p&gt;
+&lt;/div&gt;
+
+//输出hello，angularJs
+	</pre>
+
+	<article>2.输出字符串(使用单引号)</article>
+	<pre class="codes">
+function Aaa($scope){
+	$scope.name = 'hello';
+$scope.ang = 'angularJs';
+}
+
+&lt;div ng-controller="Aaa"&gt;
+	&lt;p&gt;{{'name'}}，{{'ang'}}&lt;/p&gt;
+&lt;/div&gt;
+
+//输出name，ang
+	</pre>
+
+	<article>3.全局变量的定义</article>
+	<pre class="codes">
+function Aaa($scope, $rootScope){
+	$rootScope.name = 'hello';
+}
+
+&lt;div ng-controller="Aaa"&gt;{{name}}&lt;/div&gt;  //hello
+&lt;div ng-controller="Bbb"&gt;{{name}}&lt;/div&gt;  //hello
+	</pre>
+
+
+	<p>三、$scope作用域</p>
+	<article>1.$scope是一个局部的作用域</article>
+	<pre class="codes">
+function Aaa($scope){
+	$scope.name = 'hello';
+	$scope.age = '20';
+}
+
+&lt;div ng-controller="Aaa"&gt;
+	&lt;p&gt;{{name}}&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;{{age}}&lt;/p&gt;
+
+//输出hello，{{age}}
+	</pre>
+	<p>四、angular的指令系统(ng-app和ng-controller)</p>
+	<pre class="codes">
+&lt;html ng-app&gt;
+或
+&lt;div ng-app controller="Aaa"&gt;&lt;/div&gt;
+	</pre>
+	<p>五、angular的双向数据绑定</p>
+	<article>1.MVVM(数据的改变使视图发生改变，视图的改变同样会影响到数据)</article>
+	<pre class="codes">
+function Aaa($scope){
+	$scope.name = 'hello';
+	setTimeout(function(){
+		$scope.name = 'hi';
+	}, 2000);
+}
+
+//数据已经发生变化，但是定时器并不具备视图刷新的功能
+	</pre>
+	<article>2.$timeout(angular的定时器方法)</article>
+	<pre class="codes">
+//我们可以这么做
+function Aaa($scope, $timeout){
+	$scope.name = 'hello';
+	$timeout(function(){
+		$scope.name = 'hi';
+	}, 2000);
+}
+	</pre>
+
+	<article>3.ng-click(angular的点击事件)</article>
+	<pre class="codes">
+//添加点击事件，点击后改变相应的值
+function Aaa($scope){
+	$scope.name = 'hello';
+}
+
+&lt;div ng-controller="Aaa" ng-click="name='hi'"&gt;
+	&lt;p&gt;{{name}}&lt;/p&gt;
+&lt;/div&gt;
+
+//或者
+function Aaa($scope){
+	$scope.name = 'hello';
+
+	$scope.show = function(){
+		$scope.name = 'hi';
+	}
+}
+
+&lt;div ng-controller="Aaa" ng-click="show()"&gt;
+	&lt;p&gt;{{name}}&lt;/p&gt;
+&lt;/div&gt;
+	</pre>
+
+	<article>4.ng-model</article>
+	<pre class="codes">
+//name绑定到input框中，实时改变name的值
+function Aaa($scope){
+	$scope.name = 'hello';
+}
+
+&lt;div ng-controller="Aaa"&gt;
+	&lt;input type="text" ng-model="name"&gt;
+	&lt;p&gt;{{name}}&lt;/p&gt;
+&lt;/div&gt;
+	</pre>
+
+	<p>五、购物金额实例操作</p>
+	<article>1.购物金额的计算</article>
+	<pre class="codes">
+function Aaa($scope, $timeout){
+	$scope.iphone = {
+		money : 12,
+		num : 1
+	};
+}
+
+&lt;div ng-controller="Aaa"&gt;
+	&lt;p&gt;价格：&lt;input type="text" ng-model="iphone.money"&gt;&lt;/p&gt;
+	&lt;p&gt;个数：&lt;input type="text" ng-model="iphone.num"&gt;&lt;/p&gt;
+	&lt;p&gt;费用：&lt;span&gt;{{iphone.money * iphone.num}}&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+	</pre>
+
+	<article>2.过滤器(currency，金额的格式化)</article>
+	<pre class="codes">
+&lt;div ng-controller="Aaa"&gt;
+	&lt;p&gt;价格：&lt;input type="text" ng-model="iphone.money"&gt;&lt;/p&gt;
+	&lt;p&gt;个数：&lt;input type="text" ng-model="iphone.num"&gt;&lt;/p&gt;
+	&lt;p&gt;费用：&lt;span&gt;{{ iphone.money * iphone.num | currency:'&yen;'}}&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+	</pre>
+
+	<article>3.计算结果的简化</article>
+	<pre class="codes">
+function Aaa($scope, $timeout){
+	$scope.iphone = {
+		money : 12,
+		num : 1
+	};
+	$scope.sum = function(){
+		return $scope.iphone.money * $scope.iphone.num;
+	};
+}
+
+&lt;div ng-controller="Aaa"&gt;
+	&lt;p&gt;价格：&lt;input type="text" ng-model="iphone.money"&gt;&lt;/p&gt;
+	&lt;p&gt;个数：&lt;input type="text" ng-model="iphone.num"&gt;&lt;/p&gt;
+	&lt;p&gt;费用：&lt;span&gt;{{ sum() | currency:'&yen;'}}&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+	</pre>
+
+	<article>4.添加运费的功能</article>
+	<pre class="codes">
+function Aaa($scope, $timeout){
+	$scope.iphone = {
+		money : 12,
+		num : 1,
+		fre : 15
+	};
+	$scope.sum = function(){
+		return $scope.iphone.money * $scope.iphone.num;
+	};
+}
+
+&lt;div ng-controller="Aaa"&gt;
+	&lt;p&gt;价格：&lt;input type="text" ng-model="iphone.money"&gt;&lt;/p&gt;
+	&lt;p&gt;个数：&lt;input type="text" ng-model="iphone.num"&gt;&lt;/p&gt;
+	&lt;p&gt;费用：&lt;span&gt;{{ sum() | currency:'&yen;'}}&lt;/span&gt;&lt;/p&gt;
+	&lt;p&gt;运费：&lt;span&gt;{{ iphone.fre | currency:'&yen;'}}&lt;/span&gt;&lt;/p&gt;
+	&lt;p&gt;总额：&lt;span&gt;{{ sum() + iphone.fre | currency:'&yen;'}}&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+	</pre>
+
+	<article>5.$watch(对数据的实时监听，有三个参数)</article>
+	<pre class="codes">
+//监听单个数据的变化，前两个参数为必填项
+$scope.$watch('iphone.money', function(){
+	console.log('1');
+});
+
+//监听整体数据的变化，第三个值为true
+$scope.$watch('iphone', function(){
+	console.log('1');
+}, true);
+
+//newVal：新的值，oldVal：改变前的值
+$scope.$watch('iphone.money', function(newVal, oldVal){
+	console.log(newVal);
+	console.log(oldVal);
+}, true);
+
+//监听函数返回的值
+$scope.$watch($scope.sum, function(newVal, oldVal){
+	console.log(newVal);
+	console.log(oldVal);
+}, true);
+	</pre>
+
+	<article>6.运费如果大于100则包邮</article>
+	<pre class="codes">
+$scope.$watch($scope.sum, function(newVal, oldVal){
+	$scope.iphone.fre = newVal >= 100 ? 0 : 10;
+})
+	</pre>
+
+	<p>六、angularJs的模块化开发</p>
+	<article>1.angular.module：创建模块(第一个参数：模块名，第二个参数：依赖的其他模块)</article>
+	<pre class="codes">
+var m1 = angular.module('myApp',[]);
+m1.controller('Aaa',function($scope){
+	$scope.name = 'hello';
+});
+m1.controller('Bbb',function($scope){
+	$scope.name = 'hi';
+});
+
+&lt;html ng-app="myApp"&gt;
+
+&lt;div ng-controller="Aaa"&gt;{{name}}&lt;/div&gt; //hello
+&lt;div ng-controller="Bbb"&gt;{{name}}&lt;/div&gt; //hi
+	</pre>
+	<article>2.代码压缩时可能将$scope转化为其他名称(用数组的方式改写)</article>
+	<pre class="codes">
+var m1 = angular.module('myApp',[]);
+m1.controller('Aaa', ['$scope', function($scope){
+	$scope.name = 'hello';
+}]);
+m1.controller('Bbb', ['$scope', function($scope){
+	$scope.name = 'hi';
+}]);
+	</pre>
+
+
+	<p>六、angularJs的工具方法</p>
+	<article>1.angular.bind()： 相当于jquery中的$.proxy()，用来改变this的指向</article>
+	<pre class="codes">
+function show(){
+	alert(this);
+}
+
+angular.bind(document, show)();
+
+//传参的写法
+function show(a , b){
+	alert(a);
+	alert(b);
+	alert(this);
+}
+
+angular.bind(document, show)(1 , 2);
+//或
+angular.bind(document, show, 1)(2);
+	</pre>
+
+	<article>2.angular.copy()： 拷贝对象</article>
+	<pre class="codes">
+var a = {
+	name : 'hello'
+};
+var b = {
+	age : '20'
+};
+
+var c = angular.copy(a);
+
+console.log(c);   //c为a的值
+
+
+var a = {
+	name : 'hello'
+};
+var b = {
+	age : '20'
+};
+
+var c = angular.copy(a , b);  //a把所有的值覆盖给了b
+
+console.log(c,a,b);   //a、b、c都为a的值
+	</pre>
+
+	<article>3.angular.extend()： 对象继承</article>
+	<pre class="codes">
+var a = {
+	name : 'hello'
+};
+var b = {
+	age : '20'
+};
+
+var c = angular.extend(a , b);  //a的对象继承给了b
+
+console.log(b);   //b和c的值为{name:'hello',age:'20'}, a的值不变
+	</pre>
+
+
+	<article>4.angular.identity()： 返回传递的参数</article>
+	<pre class="codes">
+var str = 'hello';
+console.log(angular.identity(str));   //hello
+//相当于
+function identity(str){
+	return str;
+}
+//默认函数的操作
+	</pre>
+
+	<article>5.angular.noop()： 一个空的函数</article>
+	<pre class="codes">
+console.log(angular.noop());    //undefined
+//相当于
+function noop(){
+}
+//默认函数的操作
+	</pre>
+
+	<article>6.angular.lowercase/angular.uppercase：大小写的转换</article>
+	<pre class="codes">
+console.log(angular.uppercase('hello'));   //HELLO
+console.log(angular.lowercase('HELLO'));   //hello
+	</pre>
+
+
+	<article>7.angular.element：选择元素</article>
+	<pre class="codes">
+var oDiv = document.getElementById('div');
+angular.element(oDiv).css('color', 'red');
+	</pre>
+
+	<article>8.angular.bootstrap：动态初始化(想要初始化时才进行初始化)</article>
+	<pre class="codes">
+//点击页面后进行初始化
+var m1 = angular.module('myApp',[]);
+m1.controller('Aaa', ['$scope', function($scope){
+	$scope.name = 'hello';
+}]);
+m1.controller('Bbb', ['$scope', function($scope){
+	$scope.name = 'hi';
+}]);
+
+document.onclick = function(){
+	angular.bootstrap(document, ['myApp']);
+};
+
+
+&lt;div ng-controller="Aaa"&gt;{{name}}&lt;/div&gt;
+&lt;div ng-controller="Bbb"&gt;{{name}}&lt;/div&gt;
+	</pre>
+
+	<pre class="codes">
+//当绑定多个时只有第一个会被初始化
+var m1 = angular.module('myApp1',[]);
+var m2 = angular.module('myApp2',[]);
+
+m1.controller('Aaa', ['$scope', function($scope){
+	$scope.name = 'hello';
+}]);
+
+m2.controller('Bbb', ['$scope', function($scope){
+	$scope.name = 'hi';
+}]);
+
+
+&lt;div ng-app="myApp1" ng-controller="Aaa"&gt;{{name}}&lt;/div&gt;
+&lt;div ng-app="myApp2" ng-controller="Bbb"&gt;{{name}}&lt;/div&gt;
+// 值为hello,{{name}}
+	</pre>
+	<pre class="codes">
+//动态初始化的方法
+var m1 = angular.module('myApp1',[]);
+var m2 = angular.module('myApp2',[]);
+
+m1.controller('Aaa', ['$scope', function($scope){
+	$scope.name = 'hello';
+}]);
+
+m2.controller('Bbb', ['$scope', function($scope){
+	$scope.name = 'hi';
+}]);
+
+document.onclick = function(){
+	var aDiv = document.getElementsByTagName('div');
+
+	angular.bootstrap(aDiv[0], ['myApp1']);
+	angular.bootstrap(aDiv[1], ['myApp2']);
+};
+&lt;div ng-app="myApp1" ng-controller="Aaa"&gt;{{name}}&lt;/div&gt;
+&lt;div ng-app="myApp2" ng-controller="Bbb"&gt;{{name}}&lt;/div&gt;
+// 值为hello,hi
+	</pre>
+
+	<p>七、run方法操作</p>
+	<pre class="codes">
+//$scope.$watch 	对数据的实时监听
+
+//$scope.$apply 	监听数据的变化，值发生改变时，刷新视图
+$scope.name = 'hello';
+setTimeout(function(){
+	$scope.$apply(function(){
+		$scope.name = 'hi';
+	});
+}, 2000);
+
+
+//run方法：存储一些全局化的变量
+var m1 = angular.module('myApp',[]);
+m1.run(['$rootScope', function($rootScope){
+	$rootScope.name = 'hello';
+}]);
+
+&lt;div&gt;
+	&lt;p&gt;{{name}}&lt;/p&gt;
+&lt;/div&gt;	//hello
+	</pre>
+
+	<p>八、angularJs的过滤器(filter)</p>
+	<pre class="codes">
+var m1 = angular.module('myApp',[]);
+m1.controller('Aaa', ['$scope', function($scope){
+	$scope.name = '1234567';
+}]);
+
+//currency：金额格式化
+{{name | currency:"￥"}} 	// ￥1,234,567.00
+
+//number：数字格式化
+{{name | number}} 	// 1,234,567
+//如果name等于一个小数 $scope.name = '1234567.5678'，number默认保留3位小数
+{{name | number:2}} //设定要保留的位数 1234567.57
+
+//lowercase/uppercase：大小写转换
+$scope.name = 'hello';
+{{name | uppercase}} 	//HELLO
+
+//json：数据转换为json格式，有助于调试
+$scope.name = {"name":"hello","age":"20"};
+&lt;pre&gt;{{name | json}}&lt;/pre&gt;
+
+//limitTo：字符截取,没有值则没有效果
+$scope.name = 'hello';
+{{name | limitTo:2}} 	//he
+//如果是数组
+$scope.name = ['a','b','c']; 	//['a','b']
+
+//date：日期格式化
+$scope.name = 1425000076776; 	//毫秒数
+{{name | date}} 	//结果是：Feb 27, 2015
+{{name | date:"fullDate"}} 	//Friday, February 27, 2015
+
+//orderBy：排序操作
+$scope.name = [
+	{color:'red',age:'20'},
+	{color:'blank',age:'30'},
+	{color:'yellow',age:'10'},
+	{color:'green',age:'40'}
+];
+{{name | orderBy : 'age'}} 	//age从小到大排序
+{{name | orderBy : 'age' : true}} 	//age从大到小排序
+
+//filter：过滤操作
+$scope.name = [
+	{color:'red',age:'20'},
+	{color:'blank',age:'30'},
+	{color:'yellow',age:'10'},
+	{color:'green',age:'40'}
+];
+{{name | filter : 'red'}} 	//[{"color":"red","age":"20"}] ，只保留包含有red的数据
+{{name | filter : '40'}} 	//[{"color":"green","age":"40"}] ，只保留包含有40的数据
+{{name | filter : '0'}} 	//包含有0的数据，四条都会检索出来
+{{name | filter : '0' : true}} 	//整体等于0的数据
+	</pre>
+
+
+
+
+
+	<script type="text/javascript" src="jquery-1.11.1.js"></script>
+	<script type="text/javascript" src="laycode/laycode.js"></script>
+	<script type="text/javascript">
+		$('.codes').laycode({
+			skin: 2,
+			title: "九口袋前端",
+			by: false
+		});
+	</script>
+</body>
+</html>
